@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import Blog, Message
-from .create_post import CreateBlogPost
+from .create_post import CreateBlogPost, ContactForm
 
 # Create your views here.
 
@@ -29,6 +29,8 @@ def createPost(request):
     return render(request, 'blogapp/create_post.html', context)
 
 
+
+
 def editPost(request, pk):
     blog = Blog.objects.get(id=pk)
     form = CreateBlogPost(instance=blog)
@@ -54,3 +56,8 @@ def message(request,pk):
     message.save()
     context = {'message': message}
     return render(request, 'blogapp/message.html', context)
+
+
+def contact(request):
+    context = {}
+    return render(request,'blogapp/contact.html',context)

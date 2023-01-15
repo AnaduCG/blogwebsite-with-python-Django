@@ -10,4 +10,5 @@ urlpatterns = [
     path('edit/<str:pk>/',views.editPost, name='edit'),
     path('inbox/',views.inbox, name='inbox'),
     path('message/<str:pk>/',views.message, name='message'),
+    path('contact/',views.contact, name='contact'),
 ]
