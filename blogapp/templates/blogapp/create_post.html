@@ -1,0 +1,44 @@
+{% extends 'blogapp/main.html' %}
+{% load static %}
+
+{% block content %}
+<div class="row comment-respond">
+
+    <!-- START respond -->
+    <div id="respond" class="column">
+
+        <h3>
+        <span></span>
+        </h3>
+
+        <form name="contactForm" id="contactForm" method="POST" action="" autocomplete="off" enctype="multipart/form-data">
+            {% csrf_token %}
+            <fieldset>
+                {{form.media}}
+                {% for field in form %}
+        
+                <div  id="respond" class="column">
+                    <div><h3><span></span></h3></div>
+                    <label for="sampleInput">{{field.label}}</label>
+                        {{field}}
+                </div>
+                {% endfor %}
+
+                    <br>
+                    <input name="submit" id="submit" class="btn btn--primary btn-wide btn--large h-full-width" value="Publish Post" type="submit">
+
+            </fieldset>
+        </form> <!-- end form -->
+
+    </div>
+    <!-- END respond-->
+
+</div> <!-- end comment-respond -->
+
+
+    <!-- Java Script
+    ================================================== -->
+    <script src="{% static 'js/jquery-3.5.0.min.js' %}"></script>
+    <script src="{% static 'js/plugins.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+{% endblock content %}
