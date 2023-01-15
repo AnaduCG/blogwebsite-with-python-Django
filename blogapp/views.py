@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Blog
+from .models import Blog, Message
 from .create_post import CreateBlogPost
 
 # Create your views here.
@@ -29,14 +29,28 @@ def createPost(request):
     return render(request, 'blogapp/create_post.html', context)
 
 
-def editPost(request,pk):
+def editPost(request, pk):
     blog = Blog.objects.get(id=pk)
     form = CreateBlogPost(instance=blog)
     if request.method == 'POST':
-        form = CreateBlogPost(request.POST, request.FILES,instance=blog)
+        form = CreateBlogPost(request.POST, request.FILES, instance=blog)
         if form.is_valid():
             form.save()
             return redirect('home')
 
     context = {'form': form}
     return render(request, 'blogapp/create_post.html', context)
+
+
+def inbox(request):
+    inbox = Message.objects.all().order_by('is_read')
+    context = {'inbox': inbox}
+    return render(request, 'blogapp/inbox.html', context)
+
+
+def message(request,pk):
+    message = Message.objects.get(id=pk)
+    message.is_read = True
+    message.save()
+    context = {'message': message}
+    return render(request, 'blogapp/message.html', context)

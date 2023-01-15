@@ -15,23 +15,20 @@
 
                     <div class="s-content__media">
                         <div class="s-content__post-thumb">
-                            <img src="{{blog.thumbnail.url}}" 
-                                 srcset="{{blog.thumbnail.url}} 2100w, 
-                                 {{blog.thumbnail.url}} 1050w, 
-                                 {{blog.thumbnail.url}} 525w" sizes="(max-width: 2100px) 100vw, 2100px" alt="">
+                            <img src="{{blog.thumbnail.url}}"  srcset="{{blog.thumbnail.url}} 2100w,{{blog.thumbnail.url}} 1050w,{{blog.thumbnail.url}} 525w" sizes="(max-width: 2100px) 100vw, 2100px" alt="">
                         </div>
                     </div> <!-- end s-content__media -->
+                    
                     <div class="s-content__entry-header">
+                        {% if request.user.is_authenticated  %}
                         <a class="btn btn--primary h-full-width" href="{% url 'edit' blog.id %}" style="width: fit-content;">Edit Post</a>
+                        {% endif %}
                         <h1 class="s-content__title s-content__title--post">{{blog.title}}</h1>
                     </div> <!-- end s-content__entry-header -->
 
                     <div class="s-content__primary">
-
                         <div class="s-content__entry-content">
-
                             <p class="lead">{{blog.body|safe}}</p>
-
                         </div> <!-- end s-entry__entry-content -->
 
                         <div class="s-content__entry-meta">

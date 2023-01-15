@@ -1,0 +1,65 @@
+{% extends 'blogapp/main.html' %} 
+{% load static %} 
+{% block content %}
+<style>
+    tr{
+        outline:1px solid #d0d1d1;
+    }
+</style>
+<div class="row">
+
+    <div class="column large-12">
+
+        <h3>Messages</h3>
+        <p>Be sure to use properly formed table markup with <code>&lt;thead&gt;</code> and <code>&lt;tbody&gt;</code> when building a <code>table</code>.</p>
+
+        <div class="table-responsive">
+
+            <table>
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Subject</th>
+                        <th>Mesage</th>
+                        <th>Time</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    
+                        
+                        {% for message in inbox %}
+                        
+                        {% if message.is_read %}
+                        <tr>
+                        {% else %}                            
+                        <tr style="font-weight:700;">
+                        {% endif %}
+                            
+                            <td>From: {{message.name}}</td>
+                            <td>{{message.subject}}</td>
+                            <td>{{message.body|truncatechars:40}}</td>
+                            <td>{{message.created}}</td>
+                            {% if message.is_read %}
+                            <td><a class="btn btn--stroke h-full-width" href="{% url 'message' message.id %}">Read</a></td>
+                            {% else %}
+                            <td><a class="btn btn--primary h-full-width" href="{% url 'message' message.id %}">Read</a></td>
+                            {% endif %}
+                        </tr>
+                        {% endfor %}
+                            
+                   
+                    </tbody>
+            </table>
+
+        </div>
+
+    </div>
+    
+</div> <!-- end row -->
+
+<!-- Java Script
+    ================================================== -->
+<script src="{% static 'js/jquery-3.5.0.min.js' %}"></script>
+<script src="{% static 'js/plugins.js' %}"></script>
+<script src="{% static 'js/main.js' %}"></script>
+{% endblock content %}

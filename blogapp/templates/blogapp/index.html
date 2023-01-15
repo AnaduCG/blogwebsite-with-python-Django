@@ -86,7 +86,10 @@
                     <li><a href="styles.html" title="">Styles</a></li>
                     <li><a href="about.html" title="">About</a></li>
                     <li><a href="contact.html" title="">Contact</a></li>
+                    {% if request.user.is_authenticated  %}
+                    <li><a href="{% url 'inbox' %}" title="">Inbox</a></li>
                     <li><a href="{% url 'create' %}" title="">Create Post</a></li>
+                    {% endif %}
                 </ul> <!-- end s-header__nav -->
 
                 <a href="#0" title="Close Menu" class="s-header__overlay-close close-mobile-menu">Close</a>
@@ -185,7 +188,7 @@
 
             </div> <!-- end s-hero__slide -->
 
-            <div class="s-hero__slide"">
+            <div class="s-hero__slide">
 
                 <div class="s-hero__slide-bg" style="background-image: url('{% static 'images/slide3-bg-3000.jpg' %}');"></div>
 
@@ -271,7 +274,7 @@
     
                         <div class="entry__text">
                             <div class="entry__header">
-                                <h1 class="entry__title"><a href="https://www.dreamhost.com/r.cgi?287326">{{blog.title}}</a></h1>
+                                <h1 class="entry__title"><a href="{% url 'blog' blog.id %}">{{blog.title}}</a></h1>
                                 
                                 <div class="entry__meta">
                                     <span class="byline">By:
