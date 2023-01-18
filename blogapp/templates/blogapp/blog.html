@@ -2,7 +2,21 @@
 {% load static %}
 
 {% block content %}
-    
+    <style>
+         .comment__avatar{
+           font-size:22px;
+        font-weight:900;
+        border-radius:50%;
+        border: 1px solid gray;
+               opacity: .3;    
+ }
+      .comment__avatar .avatar{ background:blue;
+            border-radius: 50%;
+            padding:1em;
+            opacity: 1;
+    }
+     
+    </style>
 
     <!-- content
     ================================================== -->
@@ -54,7 +68,8 @@
                                     </div>
 
                                     <span>On</span>
-                                    Oct 5, 2020
+                                    {{blog.created|date:"d M Y"}} <br>
+                                    {{blog.created|timesince}} ago
                                 </div>
 
                                 <div class="entry-tags meta-blk">
@@ -98,52 +113,39 @@
             <div id="comments" class="row">
                 <div class="column large-12">
 
-                    <h3>5 Comments</h3>
+                    <h3>
+                    {% if count == 0 %}
+                    No Comment
+                    {% elif count == 1 %}
+                    {{count}} Comment
+                    {% else %}
+                    {{count}} Comments
+                    {% endif %}
+                    </h3>
 
                     <!-- START commentlist -->
                     <ol class="commentlist">
 
-                        <li class="depth-1 comment">
 
-                            <div class="comment__avatar">
-                                <img class="avatar" src="{% static 'images/avatars/user-01.jpg' %}" alt="" width="50" height="50">
-                            </div>
-
-                            <div class="comment__content">
-
-                                <div class="comment__info">
-                                    <div class="comment__author">Itachi Uchiha</div>
-
-                                    <div class="comment__meta">
-                                        <div class="comment__time">Oct 05, 2020</div>
-                                        <div class="comment__reply">
-                                            <a class="comment-reply-link" href="#0">Reply</a>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="comment__text">
-                                <p>Adhuc quaerendum est ne, vis ut harum tantas noluisse, id suas iisque mei. Nec te inani ponderum vulputate,
-                                facilisi expetenda has et. Iudico dictas scriptorem an vim, ei alia mentitum est, ne has voluptua praesent.</p>
-                                </div>
-
-                            </div>
-
-                        </li> <!-- end comment level 1 -->
+                        {% for comment in comments %}
 
                         <li class="thread-alt depth-1 comment">
 
-                            <div class="comment__avatar">
-                                <img class="avatar" src="{% static 'images/avatars/user-04.jpg' %}" alt="" width="50" height="50">
+                            <div class="comment__avatar" style=" ">
+                                <div class="avatar">{{comment.name|slice:"0:2"}}</div>
+                                
                             </div>
 
                             <div class="comment__content">
 
                                 <div class="comment__info">
-                                    <div class="comment__author">John Doe</div>
+                                    
+                                        
+                                    <div class="comment__author">{{comment.name}}</div>
+                                        
 
                                     <div class="comment__meta">
-                                        <div class="comment__time">Oct 05, 2020</div>
+                                        <div class="comment__time">{{comment.created|timesince}} ago</div>
                                         <div class="comment__reply">
                                             <a class="comment-reply-link" href="#0">Reply</a>
                                         </div>
@@ -151,14 +153,12 @@
                                 </div>
 
                                 <div class="comment__text">
-                                <p>Sumo euismod dissentiunt ne sit, ad eos iudico qualisque adversarium, tota falli et mei. Esse euismod
-                                urbanitas ut sed, et duo scaevola pericula splendide. Primis veritus contentiones nec ad, nec et
-                                tantas semper delicatissimi.</p>
+                                <p>{{comment.body}}</p>
                                 </div>
 
                             </div>
 
-                            <ul class="children">
+                            {% comment %} <ul class="children">
 
                                 <li class="depth-2 comment">
 
@@ -221,37 +221,10 @@
 
                                 </li>
 
-                            </ul>
+                            </ul> {% endcomment %}
 
                         </li> <!-- end comment level 1 -->
-
-                        <li class="depth-1 comment">
-
-                            <div class="comment__avatar">
-                                <img class="avatar" src="{% static 'images/avatars/user-02.jpg' %}" alt="" width="50" height="50">
-                            </div>
-
-                            <div class="comment__content">
-
-                                <div class="comment__info">
-                                    <div class="comment__author">Shikamaru Nara</div>
-
-                                    <div class="comment__meta">
-                                        <div class="comment__time">Oct 03, 2020</div>
-                                        <div class="comment__reply">
-                                            <a class="comment-reply-link" href="#0">Reply</a>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="comment__text">
-                                <p>Typi non habent claritatem insitam; est usus legentis in iis qui facit eorum claritatem.</p>
-                                </div>
-
-                            </div>
-
-                        </li>  <!-- end comment level 1 -->
-
+                        {% endfor %}
                     </ol>
                     <!-- END commentlist -->
 
@@ -272,7 +245,7 @@
                     <form name="contactForm" id="contactForm" method="post" action="" autocomplete="off">
                         <fieldset>
 
-                            <div class="form-field">
+                            {% comment %} <div class="form-field">
                                 <input name="cName" id="cName" class="h-full-width h-remove-bottom" placeholder="Your Name" value="" type="text">
                             </div>
 
@@ -286,7 +259,18 @@
 
                             <div class="message form-field">
                                 <textarea name="cMessage" id="cMessage" class="h-full-width" placeholder="Your Message"></textarea>
-                            </div>
+                            </div> {% endcomment %}
+                            {% csrf_token %}
+                            <fieldset>
+                                {{form.media}}
+                                {% for field in form %}
+                        
+                                <div  id="respond" class="column">
+                                    <div><h3><span></span></h3></div>
+                                    <label for="sampleInput">{{field.label}}</label>
+                                        {{field}}
+                                </div>
+                                {% endfor %}
 
                             <br>
                             <input name="submit" id="submit" class="btn btn--primary btn-wide btn--large h-full-width" value="Add Comment" type="submit">

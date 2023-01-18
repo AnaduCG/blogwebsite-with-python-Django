@@ -1,5 +1,5 @@
 from django.forms import ModelForm
-from .models import Blog, Message
+from .models import Blog, Message, Comment
 
 class CreateBlogPost(ModelForm):
     class Meta:
@@ -21,4 +21,16 @@ class ContactForm(ModelForm):
         self.fields['name'].widget.attrs.update({'class': 'h-full-width h-remove-bottom','id':'cName'})
         self.fields['email'].widget.attrs.update({'class': 'h-full-width h-remove-bottom','id':'cName'})
         self.fields['subject'].widget.attrs.update({'class': 'h-full-width h-remove-bottom','id':'cName'})
+        self.fields['body'].widget.attrs.update({'class': 'h-full-width','id':'cMessage'})
+
+
+class CommentForm(ModelForm):
+    class Meta:
+        model = Comment
+        fields = '__all__'
+        exclude =['blog']
+
+    def __init__(self, *args, **kwargs):
+        super(CommentForm, self).__init__(*args, **kwargs)
+        self.fields['name'].widget.attrs.update({'class': 'h-full-width h-remove-bottom','id':'cName'})
         self.fields['body'].widget.attrs.update({'class': 'h-full-width','id':'cMessage'})

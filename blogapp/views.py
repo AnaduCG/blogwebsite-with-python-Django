@@ -1,19 +1,34 @@
 from django.shortcuts import render, redirect
 from .models import Blog, Message
-from .create_post import CreateBlogPost, ContactForm
+from .forms import CreateBlogPost,CommentForm
+from django.contrib import messages
+from django.core.paginator import Paginator
 
 # Create your views here.
 
 
 def homePage(request):
     blogs = Blog.objects.all()
-    context = {'blogs': blogs}
+    paginator = Paginator(blogs, 12)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    context = {'page_obj':page_obj}
     return render(request, 'blogapp/index.html', context)
 
 
 def blogPage(request, pk):
     blog = Blog.objects.get(id=pk)
-    context = {'blog': blog}
+    count = blog.comment_set.count()
+    comments = blog.comment_set.all().order_by('-created')[:3]
+    form = CommentForm()
+    if request.method == 'POST':
+        form = CommentForm(request.POST, request.FILES)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.blog = blog
+            comment.save()
+            messages.success(request, 'Comment successful')
+    context = {'blog': blog,'count':count,'comments':comments,'form':form}
     return render(request, 'blogapp/blog.html', context)
 
 

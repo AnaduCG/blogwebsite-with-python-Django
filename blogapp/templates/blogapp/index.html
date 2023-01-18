@@ -62,30 +62,7 @@
 
                 <ul class="s-header__nav">
                     <li class="current"><a href="{% url 'home' %}" title="">Home</a></li>
-                    <li class="has-children">
-                        <a href="#0" title="">Categories</a>
-                        <ul class="sub-menu">
-                            <li><a href="category.html">Design</a></li>
-                            <li><a href="category.html">Lifestyle</a></li>
-                            <li><a href="category.html">Photography</a></li>
-                            <li><a href="category.html">Vacation</a></li>
-                            <li><a href="category.html">Work</a></li>
-                            <li><a href="category.html">Health</a></li>
-                            <li><a href="category.html">Family</a></li>
-                            <li><a href="category.html">Relationship</a></li>
-                        </ul>
-                    </li>
-                    <li class="has-children">
-                        <a href="#0" title="">Blog</a>
-                        <ul class="sub-menu">
-                            <li><a href="single-video.html">Video Post</a></li>
-                            <li><a href="single-audio.html">Audio Post</a></li>
-                            <li><a href="single-standard.html">Standard Post</a></li>
-                        </ul>
-                    </li>
-                    <li><a href="styles.html" title="">Styles</a></li>
-                    <li><a href="about.html" title="">About</a></li>
-                    <li><a href="{% url 'contact' %}" title="">Contact</a></li>
+                    
                     {% if request.user.is_authenticated  %}
                     <li><a href="{% url 'inbox' %}" title="">Inbox</a></li>
                     <li><a href="{% url 'create' %}" title="">Create Post</a></li>
@@ -249,7 +226,8 @@
         <!-- masonry
         ================================================== -->
         <div class="s-bricks">
-
+            
+                
             <div class="masonry">
                 <div class="bricks-wrapper h-group">
 
@@ -261,7 +239,7 @@
                         <span></span>
                     </div>
 
-                    {% for blog in blogs %}
+                    {% for blog in page_obj %}
     
                     <article class="brick entry" data-aos="fade-up">
     
@@ -306,23 +284,22 @@
                 <div class="column large-12">
                     <nav class="pgn">
                         <ul>
+                            {% if page_obj.has_previous %}
                             <li>
-                                <span class="pgn__prev" href="#0">
+                                <a class="pgn__prev" href="?page={{ page_obj.previous_page_number }}">
                                     Prev
-                                </span>
+                                </a>
                             </li>
-                            <li><a class="pgn__num" href="#0">1</a></li>
-                            <li><span class="pgn__num current">2</span></li>
-                            <li><a class="pgn__num" href="#0">3</a></li>
-                            <li><a class="pgn__num" href="#0">4</a></li>
-                            <li><a class="pgn__num" href="#0">5</a></li>
-                            <li><span class="pgn__num dots">…</span></li>
-                            <li><a class="pgn__num" href="#0">8</a></li>
+                            {% endif %}
+                            <li><span class="pgn__num current">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.</span></li>
+
+                            {% if page_obj.has_next %}
                             <li>
-                                <span class="pgn__next" href="#0">
+                                <a class="pgn__next" href="?page={{ page_obj.next_page_number }}">
                                     Next
-                                </span>
+                                </a>
                             </li>
+                            {% endif %}
                         </ul>
                     </nav> <!-- end pgn -->
                 </div> <!-- end column -->

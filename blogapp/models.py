@@ -18,6 +18,16 @@ class Blog(models.Model):
         return self.title
 
 
+class Comment(models.Model):
+    blog = models.ForeignKey(Blog, on_delete=models.CASCADE)
+    name = models.CharField(max_length=200)
+    created = models.DateTimeField(auto_now_add=True)
+    body = models.TextField()
+
+    def __str__(self):
+        return self.body[0:50]
+
+
 class Tag(models.Model):
     name = models.CharField(max_length=200)
     created = models.DateTimeField(auto_now_add=True)
